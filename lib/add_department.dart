@@ -1,5 +1,7 @@
-import 'package:add_department/services/sending_data.dart';
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class AddDepartment extends StatefulWidget {
   const AddDepartment({Key? key}) : super(key: key);
@@ -10,10 +12,30 @@ class AddDepartment extends StatefulWidget {
 
 class _AddDepartmentState extends State<AddDepartment> {
   final List<String> statusList = ["Active", "Not-Active"];
-  late String _currentSelectedValue = "Active";
-  late final String deptName;
-  late final String des;
+  String _currentSelectedValue = "Active";
+  late String deptName;
+  late String des;
   int statusValue = 1;
+
+  // Posting data
+  void postData(String deptName, String des, int statusValue) async {
+    try {
+      final response = await post(
+        Uri.parse('https://2d6a-45-118-158-144.ngrok.io/documents'),
+        body: jsonEncode(
+          <String, dynamic>{
+            'deptName': deptName,
+            'des': des,
+            'status': statusValue,
+          },
+        ),
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,9 +145,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                       child: TextButton(
                         style: TextButton.styleFrom(
                             backgroundColor: Colors.green.shade400),
-                        onPressed: () => print(
-                          createDeptData(deptName, des, statusValue),
-                        ),
+                        onPressed: () => postData(deptName, des, statusValue),
                         child: const Center(
                           child: Text(
                             "Submit",
