@@ -123,9 +123,8 @@ class _AddDepartmentState extends State<AddDepartment> {
                       child: TextButton(
                         style: TextButton.styleFrom(
                             backgroundColor: Colors.green.shade400),
-                        onPressed: () => print(
-                          createDeptData(deptName, des, statusValue),
-                        ),
+                        onPressed: () =>
+                            createDeptData(deptName, des, statusValue),
                         child: const Center(
                           child: Text(
                             "Submit",
